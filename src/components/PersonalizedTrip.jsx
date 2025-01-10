@@ -103,11 +103,6 @@ const PersonalizedTrip = () => {
     }));
   }
 
-  // Handle adding itinerary
-  const handleIti = () => {
-    console.log("Itinerary Created:", itinerary);
-  };
-
   return (
     <div className="flex flex-wrap min-h-screen">
       {/* Left Container - Trip Details, Hotel, Attraction, and Club Cards */}
