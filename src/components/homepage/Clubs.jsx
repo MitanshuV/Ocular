@@ -65,7 +65,7 @@ const Clubs = () => {
         method: "GET",
         headers: {
           "x-rapidapi-key":
-            "1ef1dc9277msh89ab270fe74a7f7p1abcd9jsn8a50e59e5b0b", // Replace with your actual key
+            "1211178346msh6b1db6542b9548fp1c193djsnddca6fcc7694", // Replace with your actual key
           "x-rapidapi-host":
             "google-place-autocomplete-and-place-info.p.rapidapi.com",
         },

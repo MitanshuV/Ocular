@@ -72,7 +72,7 @@ const Attractions = () => {
         method: "GET",
         headers: {
           "x-rapidapi-key":
-            "f6615b4a07msh5d8f2482b153b70p1d9b3ajsnc00c5e79f418", // Replace with your actual key
+            "1211178346msh6b1db6542b9548fp1c193djsnddca6fcc7694", // Replace with your actual key
           "x-rapidapi-host":
             "google-place-autocomplete-and-place-info.p.rapidapi.com",
         },

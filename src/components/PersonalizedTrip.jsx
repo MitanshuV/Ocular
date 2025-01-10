@@ -234,13 +234,6 @@ const PersonalizedTrip = () => {
             ))}
           </div>
         </div>
-
-        <Button
-          className="mt-4 w-full bg-green-500 hover:bg-green-600 text-white"
-          onClick={handleIti}
-        >
-          Create Itinerary
-        </Button>
       </div>
 
       {/* Right Container - Day-wise Itinerary */}
