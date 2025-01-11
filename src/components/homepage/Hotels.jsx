@@ -169,7 +169,7 @@ const Hotels = () => {
                     </div>
 
                     <img
-                      src={hotel.photos[0].src}
+                      src={hotel.photos[0].src || hotel.photos[0].src}
                       alt={hotel.name}
                       className="rounded-lg my-2 object-cover h-32 w-full"
                     />
