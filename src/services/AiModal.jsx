@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // const googlePlaceApi = AIzaSyDcyJ7s3Sv36hFGcU6QBvqS_9iS7BHF4fI000;
-const googleGeminiApi = "AIzaSyDcyJ7s3Sv36hFGcU6QBvqS_9iS7BHF4fI";
+const googleGeminiApi = "AIzaSyAlgSPL4tZnhxyfZw3f8QhdUBZK1Hne5Ic";
 const genAI = new GoogleGenerativeAI(googleGeminiApi);
 
 const model = genAI.getGenerativeModel({

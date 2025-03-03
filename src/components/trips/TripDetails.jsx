@@ -34,6 +34,27 @@ const TripDetails = () => {
     }
   }
 
+  // Safely check if itinerary exists and is a non-null object
+  if (
+    parsedTripDetails.itinerary &&
+    typeof parsedTripDetails.itinerary === "object" &&
+    !Array.isArray(parsedTripDetails.itinerary)
+  ) {
+    // Check if the object has any properties
+    if (Object.keys(parsedTripDetails.itinerary).length > 0) {
+      // Iterate over object entries (key-value pairs)
+      Object.entries(parsedTripDetails.itinerary).forEach(
+        ([key, value], index) => {
+          console.log(`Itinerary Entry ${index + 1} - Key "${key}":`, value);
+        }
+      );
+    } else {
+      console.log("Itinerary exists but is empty.");
+    }
+  } else {
+    console.log("No itinerary found or it's not an object.");
+  }
+
   return (
     <div>
       <div className="trip-details mb-10">
@@ -103,146 +124,162 @@ const TripDetails = () => {
           </div>
 
           {/* Render the itinerary dynamically */}
-          {parsedTripDetails.itinerary && (
-            <div className="itinerary-section my-8 p-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg shadow-xl">
-              <h2 className="text-3xl font-extrabold text-gray-800 mb-6">
-                Itinerary
-              </h2>
-              <Accordion type="single" collapsible>
-                {Object.keys(parsedTripDetails.itinerary).map((day, index) => {
-                  const itineraryDay = parsedTripDetails.itinerary[day];
-                  return (
-                    <AccordionItem
-                      key={index}
-                      value={`day-${index}`}
-                      className="mb-4"
-                    >
-                      <AccordionTrigger className="bg-white p-4 rounded-lg shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg">
-                        <h3 className="text-2xl font-semibold capitalize text-gray-700">
-                          {day.replace(/(\D+)(\d+)/, "$1 $2")}
-                        </h3>
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-6 mt-4">
-                          {Object.keys(itineraryDay).map((timePeriod, idx) => {
-                            const periodDetails = itineraryDay[timePeriod];
-                            return (
-                              <div
-                                key={idx}
-                                className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-6"
-                              >
-                                {/* Image Section on the left */}
-                                <div className="flex-shrink-0 w-full md:w-32 h-32 rounded-lg overflow-hidden flex justify-center items-center">
-                                  <img
-                                    src="https://images.unsplash.com/photo-1707807562742-bf69e7feaf4e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXR0cmFjdGlvbnN8ZW58MHx8MHx8fDA%3D"
-                                    alt={periodDetails.placeName}
-                                    className="object-cover w-full h-full"
-                                  />
-                                </div>
+          {parsedTripDetails.itinerary &&
+            typeof parsedTripDetails.itinerary === "object" &&
+            !Array.isArray(parsedTripDetails.itinerary) && (
+              <div className="my-10 p-8 bg-gradient-to-b from-gray-900 to-gray-800 border border-gray-700 rounded-3xl shadow-2xl text-white">
+                {/* Header Section */}
+                <h2 className="text-3xl font-extrabold mb-6 flex items-center gap-3">
+                  🌍 <span className="tracking-wide">Itinerary Overview</span>
+                </h2>
 
-                                {/* Text and details on the right */}
-                                <div className="w-full">
-                                  {/* Title, hidden on mobile screens */}
-                                  <h4 className="text-lg font-medium mb-2 text-gray-800 hidden md:block">
-                                    {timePeriod.charAt(0).toUpperCase() +
-                                      timePeriod.slice(1)}
-                                  </h4>
+                {/* Check if object has keys */}
+                {Object.keys(parsedTripDetails.itinerary).length > 0 ? (
+                  <div className="space-y-10">
+                    {Object.entries(parsedTripDetails.itinerary).map(
+                      ([dayKey, dayValue]) => (
+                        <div
+                          key={dayKey}
+                          className="p-6 rounded-xl bg-white bg-opacity-10 backdrop-blur-md shadow-lg border border-gray-600 hover:shadow-2xl transition-all duration-300"
+                        >
+                          {/* Day Header */}
+                          <h3 className="text-2xl font-bold flex items-center gap-2 mb-5 text-blue-400">
+                            📅 Day {dayKey.replace(/(\D+)(\d+)/, "$1 $2")}
+                          </h3>
 
-                                  {/* Place Name */}
-                                  {periodDetails.placeName && (
-                                    <p className="text-gray-600 mb-2">
-                                      <strong>Place Name:</strong>{" "}
-                                      {periodDetails.placeName}
-                                    </p>
-                                  )}
+                          {/* Time slots list */}
+                          {Object.keys(dayValue).length > 0 ? (
+                            <div className="space-y-6">
+                              {Object.entries(dayValue).map(
+                                ([timeKey, timeValue]) => (
+                                  <div
+                                    key={timeKey}
+                                    className="flex flex-col sm:flex-row items-center bg-white bg-opacity-20 backdrop-blur-lg rounded-xl shadow-md border border-gray-500 hover:scale-[1.02] hover:border-blue-400 transition-all duration-300 overflow-hidden"
+                                  >
+                                    {/* Left Side - Image */}
+                                    <div className="w-full sm:w-1/3">
+                                      <img
+                                        src={
+                                          timeValue.placeImgUrl
+                                            ? timeValue.placeImgUrl
+                                            : "https://images.unsplash.com/photo-1740382281576-95db2cf42d72?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDh8NnNNVmpUTFNrZVF8fGVufDB8fHx8fA%3D%3D"
+                                        }
+                                        alt={
+                                          timeValue.placeName
+                                            ? `Image of ${timeValue.placeName}`
+                                            : "Beautiful travel destination"
+                                        }
+                                        className="w-full h-48 sm:h-full object-cover rounded-t-xl sm:rounded-l-xl sm:rounded-tr-none"
+                                      />
+                                    </div>
 
-                                  {/* Place Detail */}
-                                  {periodDetails.placeDetail && (
-                                    <p className="text-gray-600 mb-2">
-                                      <strong>Place Detail:</strong>{" "}
-                                      {periodDetails.placeDetail}
-                                    </p>
-                                  )}
+                                    {/* Right Side - Details */}
+                                    <div className="p-6 w-full sm:w-2/3">
+                                      {/* Time Period Header (Removed ⏰) */}
+                                      <p className="text-lg font-semibold text-white flex items-center gap-2">
+                                        {timeKey.charAt(0).toUpperCase() +
+                                          timeKey.slice(1)}
+                                      </p>
 
-                                  {/* Rating */}
-                                  {periodDetails.rating != null &&
-                                    !isNaN(periodDetails.rating) && (
-                                      <div className="flex items-center mb-2">
-                                        <strong className="mr-2 text-gray-800">
-                                          Rating:
-                                        </strong>
-                                        {Array.from(
-                                          {
-                                            length: Math.floor(
-                                              periodDetails.rating
-                                            ),
-                                          },
-                                          (_, i) => (
-                                            <FaStar
-                                              key={i}
-                                              className="text-yellow-500"
-                                            />
-                                          )
-                                        )}
-                                        {periodDetails.rating % 1 !== 0 && (
-                                          <FaStarHalfAlt className="text-yellow-500" />
-                                        )}
-                                        {Array.from(
-                                          {
-                                            length:
-                                              5 -
-                                              Math.ceil(periodDetails.rating),
-                                          },
-                                          (_, i) => (
-                                            <FaStar
-                                              key={
-                                                i +
-                                                Math.floor(
-                                                  periodDetails.rating
-                                                ) +
-                                                (periodDetails.rating % 1 !== 0
-                                                  ? 1
-                                                  : 0)
-                                              }
-                                              className="text-gray-300"
-                                            />
-                                          )
-                                        )}
-                                        <span className="ml-3 text-gray-600">
-                                          {Number(periodDetails.rating).toFixed(
-                                            1
+                                      {/* Time Period Details */}
+                                      {typeof timeValue === "object" ? (
+                                        <div className="mt-2 space-y-2 text-gray-200">
+                                          {timeValue.placeName && (
+                                            <p className="text-sm">
+                                              <span className="font-medium text-blue-300">
+                                                📍 Place:
+                                              </span>{" "}
+                                              {timeValue.placeName}
+                                            </p>
                                           )}
-                                        </span>
-                                      </div>
-                                    )}
-
-                                  {/* Ticket Pricing */}
-                                  {periodDetails.ticketPricing && (
-                                    <p className="text-gray-600 mb-2">
-                                      <strong>Ticket Pricing:</strong>{" "}
-                                      {periodDetails.ticketPricing}
-                                    </p>
-                                  )}
-
-                                  {/* Time Travel */}
-                                  {periodDetails.timeTravel && (
-                                    <p className="text-gray-600">
-                                      <strong>Travel Time:</strong>{" "}
-                                      {periodDetails.timeTravel}
-                                    </p>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
+                                          {timeValue.placeDetail && (
+                                            <p className="text-sm">
+                                              <span className="font-medium text-blue-300">
+                                                📝 Details:
+                                              </span>{" "}
+                                              {timeValue.placeDetail}
+                                            </p>
+                                          )}
+                                          {timeValue.rating &&
+                                            typeof timeValue.rating ===
+                                              "number" &&
+                                            timeValue.rating > 0 && (
+                                              <p className="text-sm flex items-center gap-2">
+                                                <span className="font-medium text-blue-300">
+                                                  ⭐ Rating:
+                                                </span>
+                                                <span className="flex text-yellow-400">
+                                                  {"★".repeat(
+                                                    Math.floor(timeValue.rating)
+                                                  )}{" "}
+                                                  {/* Full stars */}
+                                                  {timeValue.rating % 1 !== 0
+                                                    ? "⭑"
+                                                    : ""}{" "}
+                                                  {/* Half star if needed */}
+                                                  {"☆".repeat(
+                                                    5 -
+                                                      Math.ceil(
+                                                        timeValue.rating
+                                                      )
+                                                  )}{" "}
+                                                  {/* Empty stars */}
+                                                </span>
+                                                <span>
+                                                  ({timeValue.rating.toFixed(1)}
+                                                  )
+                                                </span>
+                                              </p>
+                                            )}
+                                          {timeValue.ticketPricing && (
+                                            <p className="text-sm">
+                                              <span className="font-medium text-blue-300">
+                                                🎟️ Ticket Price:
+                                              </span>{" "}
+                                              {timeValue.ticketPricing}
+                                            </p>
+                                          )}
+                                          {timeValue.timeTravel && (
+                                            <p className="text-sm">
+                                              <span className="font-medium text-blue-300">
+                                                ⏳ Travel Time:
+                                              </span>{" "}
+                                              {timeValue.timeTravel}
+                                            </p>
+                                          )}
+                                          {!timeValue.placeName &&
+                                            !timeValue.placeDetail && (
+                                              <p className="text-sm text-gray-400 italic">
+                                                No details available.
+                                              </p>
+                                            )}
+                                        </div>
+                                      ) : (
+                                        <p className="text-sm text-gray-300 mt-2">
+                                          {timeValue}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          ) : (
+                            <p className="text-gray-400 italic mt-3">
+                              No activities planned for this day.
+                            </p>
+                          )}
                         </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  );
-                })}
-              </Accordion>
-            </div>
-          )}
+                      )
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-gray-400 italic text-center">
+                    ⚠️ Itinerary object exists but is empty
+                  </p>
+                )}
+              </div>
+            )}
         </div>
       ) : (
         <p>No trip details available. Please try again.</p>
